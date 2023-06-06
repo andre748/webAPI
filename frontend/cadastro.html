@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST with AXIOS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+<body>
+    <script>
+        const urlParams =   new URLSearchParams(window.location.search);
+        const id        =   urlParams.get("id");
+
+        if (id !== null) {
+
+            axios.get('http://localhost:3000/pessoa/'+ id +'')
+            .then(function (response) {
+                document.getElementById('_id').value            =   response.data._id;
+                document.getElementById('telefone').value      =   response.data.telefone;
+                document.getElementById('telefone').readOnly   =   true;
+                document.getElementById('Nome').value           =   response.data.Nome;
+                document.getElementById('senha').value     =   response.data.disciplina;
+
+            })
+            .catch(function (err) {
+                alert(err.message);
+            });
+
+        }
+
+        function titulo() {
+            if (id) {
+                document.getElementById("titulo").innerHTML = 'PUT with AXIOS'
+            } else {
+                document.getElementById("titulo").innerHTML = 'POST with AXIOS'
+            }
+        }
+        
+        function botao() {
+            if (id) {
+                document.getElementById("botao").innerHTML = '<button type="button" id="btn" class="btn btn-primary">Atualizar</button>'
+            } else {
+                document.getElementById("botao").innerHTML = '<button type="button" id="btn" class="btn btn-success">Cadastrar</button>'
+            }
+        }
+                
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <div class="container">
+        <div class="row">
+            <h1>POST with AXIOS</h1>
+            <hr>
+            <div id="output"></div>
+        </div>
+        <div class="row">
+            <div class="col">
+
+            </div>
+            <div class="col">
+                <form action="" id="form">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="Nome">
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefone" class="form-label">telefone</label>
+                        <input type="number" class="form-control" id="telefone">
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="text" class="form-control" id="senha">
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" id="btn" class="btn btn-success">Cadastrar</button>
+                        <a href="C:\Users\alunok10\Documents\webAPI\frontend\get.html"><button class="btn btn-primary" type="submit">Lista</button></a>
+                    </div>
+                </form>
+            </div>
+            <div class="col">
+                
+            </div>
+        </div>
+    </div>
+    <script>
+        const form            =   document.getElementById("form");
+        const emailInput  =   document.getElementById("email");
+        const NomeInput       =   document.getElementById("Nome");
+        const telefoneInput = document.getElementById("telefone")
+        const senhaInput =   document.getElementById("senha");
+
+        btn.addEventListener("click", () => {
+            const email         =   emailInput.value;
+            const Nome              =   NomeInput.value;
+            const telefone      =    telefoneInput.value;
+            const senha        =   senhaInput.value;
+
+            if (_id === '') {
+            axios.post("http://localhost:3000/pessoa", {
+                email: email,
+                Nome: Nome,
+                telefone: telefone,
+                senha: senha
+            })
+            .then((response) => {
+                output.innerHTML    =   `<div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <strong>Perfeito!</strong> Cadastro efetuado com sucesso.
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>`;
+                form.reset()                       
+                
+            })
+            .catch(function (err){
+                document.getElementById("output").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>'+ err.message +'</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            })
+        } else {
+                
+                axios.put('http://localhost:3000/pessoa/'+ _id +'', {
+
+                    telefone: parseInt(telefone),
+                    Nome: Nome,
+                    email: email
+
+                })
+                .then((response) => {
+
+                    output.innerHTML    =   `<div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                            <strong>Perfeito!</strong> Atualização efetuada com sucesso.
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>`;                     
+                
+                })
+                .catch(function (err){
+                    document.getElementById("output").innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>'+ err.message +'</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                })
+            }
+    });
+    
+
+    </script>
+    
+</body>
+</html>
